@@ -120,7 +120,7 @@ while True:
 
             if message == "1":
                 text_file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt")])
-                with open(text_file_path, 'r') as f:
+                with open(text_file_path, 'r', encoding='utf-8') as f:
                     message = f.read()
 
                 if not text_file_path:
@@ -134,7 +134,7 @@ while True:
                 image_path = filedialog.askopenfilename(filetypes=[("PNG files", "*.png")])
                 img = Image.open(image_path)
                 width, height = img.size
-                max_load = int(width*height*3/8)
+                max_load = int(width*height*3/8)    
                 print("Opened a {0} x {1} px image".format(width, height))
                 print("Max load for this image is {0} bytes".format(max_load))
 
