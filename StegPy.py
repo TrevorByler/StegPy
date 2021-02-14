@@ -14,6 +14,14 @@ def open_file_path(input_field):
     input_field.delete(0, "end")
     input_field.insert(0, directory)
 
+def import_text(listbox):
+    text_file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt")])
+    with open(text_file_path, 'r', encoding='utf-8') as f:
+        message = f.readlines()
+        listbox.delete(0, END)
+        for line in message:
+            listbox.insert(END, line)
+
 def decode_img(img, delimiter='`'):
     width,height = img.size
     data = numpy.array(img)
@@ -138,10 +146,12 @@ output_png_file_button = Button(encode_tab, text="Browse...", command=lambda: sa
 
 steg_options_label = Label(encode_tab, text="Mode:")
 
-encode_message = Listbox(encode_tab, height = 8, width = 60)
+encode_message_box = Listbox(encode_tab, height = 8, width = 60)
 scrollbar = Scrollbar(encode_tab)
-encode_message.configure(yscrollcommand = scrollbar.set)
-scrollbar.configure(command = encode_message.yview)
+encode_message_box.configure(yscrollcommand = scrollbar.set)
+scrollbar.configure(command = encode_message_box.yview)
+
+import_text_button = Button(encode_tab, text="Import Text File", command=lambda: import_text(encode_message_box))
 
 input_png_file_label.grid(column=0, row=0) 
 input_png_file_input.grid(column=1, row=0, columnspan=3) 
@@ -156,8 +166,8 @@ for i, option in enumerate(STEG_OPTIONS):
     Radiobutton(encode_tab, text=option[0],
                 variable=steg_mode, value=option[1]).grid(column=i+1, row=2, sticky=W)
 
-encode_message.grid(row = 3, column = 0, columnspan = 3, rowspan=3, pady = 10)
+encode_message_box.grid(row = 3, column = 0, columnspan = 3, rowspan=3, pady = 10)
 scrollbar.grid(row = 3, column = 3, rowspan=3)
-
+import_text_button.grid(row=3, column=4)
 
 mainloop()
