@@ -123,8 +123,8 @@ tab_control.add(encode_tab, text="Encode")
 tab_control.add(decode_tab, text="Decode")
 tab_control.pack(expand=1, fill="both")
 
-steg_mode = StringVar(root)
-STEG_OPTIONS = ["LSB", "MSB"]
+steg_mode = IntVar(encode_tab)
+STEG_OPTIONS = [("LSB", 1), ("MSB", 2)]
 
 #ENCODE SECTION#
 #-Input file row
@@ -137,7 +137,6 @@ output_png_file_input = Entry(encode_tab, width=60)
 output_png_file_button = Button(encode_tab, text="Browse...", command=lambda: save_file_path(output_png_file_input))
 
 steg_options_label = Label(encode_tab, text="Mode:")
-steg_options_menu = OptionMenu(encode_tab, steg_mode, *STEG_OPTIONS)
 
 encode_message = Listbox(encode_tab, height = 8, width = 60)
 scrollbar = Scrollbar(encode_tab)
@@ -153,10 +152,12 @@ output_png_file_input.grid(column=1, row=1, columnspan=3)
 output_png_file_button.grid(column=4, row=1)
 
 steg_options_label.grid(column=0, row=2)
-steg_options_menu.grid(column=1, row=2)
+for i, option in enumerate(STEG_OPTIONS):
+    Radiobutton(encode_tab, text=option[0],
+                variable=steg_mode, value=option[1]).grid(column=i+1, row=2, sticky=W)
 
-encode_message.grid(row = 3, column = 0, columnspan = 3, pady = 10, padx = 10)
-scrollbar.grid(row = 3, column = 3)
+encode_message.grid(row = 3, column = 0, columnspan = 3, rowspan=3, pady = 10)
+scrollbar.grid(row = 3, column = 3, rowspan=3)
 
 
 mainloop()
