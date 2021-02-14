@@ -101,6 +101,20 @@ def encode_bytes(message, img, delimiter='`'):
     #         else: break
     # return Image.fromarray(data)
 
+def LSB_plane(img):
+
+    width, height = img.size
+    data = numpy.array(img)
+
+    for i in range(height):
+        for j in range(width):
+            pixel = data[i][j]
+            r,g,b,*_ = map(lambda x: (x & 2)*255, pixel)
+            pixel[0] = r
+            pixel[1] = g
+            pixel[2] = b
+
+    return Image.fromarray(data)
 
 root = tk.Tk()
 root.withdraw()
@@ -133,6 +147,7 @@ while True:
 
                 image_path = filedialog.askopenfilename(filetypes=[("PNG files", "*.png")])
                 img = Image.open(image_path)
+                #LSB_plane(img).save(image_path[:-4] + "_LSB_plane.png")
                 width, height = img.size
                 max_load = int(width*height*3/8)    
                 print("Opened a {0} x {1} px image".format(width, height))
@@ -152,8 +167,10 @@ while True:
                 new_image_path = filedialog.asksaveasfilename(filetypes=[("PNG files", "*.png")])
                 print("\nExporting to {}".format(new_image_path))
                 img2.save(new_image_path)
+                #LSB_plane(img2).save(new_image_path[:-4] + "_LSB_plane.png")
                 print("Done!")
                 break
+            
     elif choice == "2":
         input("\nPress ENTER to select an image file to decode: ")
         image_path = filedialog.askopenfilename(filetypes=[("PNG files", "*.png")])
