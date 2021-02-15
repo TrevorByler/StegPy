@@ -166,7 +166,7 @@ for i, option in enumerate(STEG_OPTIONS):
     Radiobutton(encode_tab, text=option[0],
                 variable=steg_mode, value=option[1]).grid(column=i+1, row=2, sticky=W)
 
-encode_message_box.grid(row = 3, column = 0, columnspan = 3, rowspan=3, pady = 10)
+encode_message_box.grid(row=3, column=0, columnspan=3, rowspan=3, pady=10)
 scrollbar.grid(row = 3, column = 3, rowspan=3)
 import_text_button.grid(row=3, column=4)
 
