@@ -134,40 +134,52 @@ tab_control.pack(expand=1, fill="both")
 steg_mode = IntVar(encode_tab)
 STEG_OPTIONS = [("LSB", 1), ("MSB", 2)]
 
-#ENCODE SECTION#
-#-Input file row
-input_png_file_label = Label(encode_tab, text="Input File Path:")
-input_png_file_input = Entry(encode_tab, width=60)
-input_png_file_button = Button(encode_tab, text="Browse...", command=lambda: open_file_path(input_png_file_input))
+# ENCODE SECTION#
+# -Input file row
+input_png_file_frame = Frame(encode_tab)
+input_png_file_label = Label(input_png_file_frame, text="Input File Path:")
+input_png_file_input = Entry(input_png_file_frame)
+input_png_file_button = Button(input_png_file_frame, text="Browse...", command=lambda: open_file_path(input_png_file_input))
 
-output_png_file_label = Label(encode_tab, text="Output File Path:")
-output_png_file_input = Entry(encode_tab, width=60)
-output_png_file_button = Button(encode_tab, text="Browse...", command=lambda: save_file_path(output_png_file_input))
+input_png_file_label.pack(side = LEFT)
+input_png_file_input.pack(side = LEFT, expand = TRUE, fill = X)
+input_png_file_button.pack(side = LEFT)
 
-steg_options_label = Label(encode_tab, text="Mode:")
+output_png_file_frame = Frame(encode_tab)
+output_png_file_label = Label(output_png_file_frame, text="Output File Path:")
+output_png_file_input = Entry(output_png_file_frame)
+output_png_file_button = Button(output_png_file_frame, text="Browse...", command=lambda: save_file_path(output_png_file_input))
 
-encode_message_box = Listbox(encode_tab, height = 8, width = 60)
-scrollbar = Scrollbar(encode_tab)
-encode_message_box.configure(yscrollcommand = scrollbar.set)
-scrollbar.configure(command = encode_message_box.yview)
+output_png_file_label.pack(side = LEFT)
+output_png_file_input.pack(side = LEFT, expand = TRUE, fill = X)
+output_png_file_button.pack(side = LEFT)
 
-import_text_button = Button(encode_tab, text="Import Text File", command=lambda: import_text(encode_message_box))
+# steg_options_label = Label(encode_tab, text="Mode:")
 
-input_png_file_label.grid(column=0, row=0) 
-input_png_file_input.grid(column=1, row=0, columnspan=3) 
-input_png_file_button.grid(column=4, row=0) 
+encode_textbox_frame = Frame(encode_tab)
+encode_textbox = Listbox(encode_textbox_frame)
+scrollbar_y = Scrollbar(encode_textbox_frame)
+scrollbar_x = Scrollbar(encode_textbox_frame, orient = HORIZONTAL)
 
-output_png_file_label.grid(column=0, row=1) 
-output_png_file_input.grid(column=1, row=1, columnspan=3) 
-output_png_file_button.grid(column=4, row=1)
+encode_textbox.configure(yscrollcommand = scrollbar_y.set, xscrollcommand = scrollbar_x.set)
+scrollbar_y.configure(command = encode_textbox.yview)
+scrollbar_x.configure(command = encode_textbox.xview)
 
-steg_options_label.grid(column=0, row=2)
-for i, option in enumerate(STEG_OPTIONS):
-    Radiobutton(encode_tab, text=option[0],
-                variable=steg_mode, value=option[1]).grid(column=i+1, row=2, sticky=W)
+import_text_button = Button(encode_textbox_frame, text="Import Text File", command=lambda: import_text(encode_textbox))
 
-encode_message_box.grid(row=3, column=0, columnspan=3, rowspan=3, pady=10)
-scrollbar.grid(row = 3, column = 3, rowspan=3)
-import_text_button.grid(row=3, column=4)
+import_text_button.pack(side = TOP)
+import_text_button.pack_configure()
+scrollbar_x.pack(side = BOTTOM, fill = X)
+scrollbar_y.pack(side = RIGHT, fill = Y)
+encode_textbox.pack(side = TOP, expand = TRUE, fill = BOTH)
+
+input_png_file_frame.pack(side = TOP, expand = TRUE, fill = BOTH)
+output_png_file_frame.pack(side = TOP, expand = TRUE, fill = BOTH)
+encode_textbox_frame.pack(side = TOP, expand = TRUE, fill = BOTH)
+
+# steg_options_label.grid(column=0, row=2)
+# for i, option in enumerate(STEG_OPTIONS):
+#     Radiobutton(encode_tab, text=option[0],
+#                 variable=steg_mode, value=option[1]).grid(column=i+1, row=2, sticky=W)
 
 mainloop()
