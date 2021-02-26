@@ -5,16 +5,22 @@ from tkinter import ttk
 from tkinter import filedialog
 
 def save_file_path(input_field: Entry):
+    "Creates a file save as dialog and inserts chosen file path into entry box"
+
     directory = filedialog.asksaveasfilename(filetypes=[("PNG files", "*.png")])
     input_field.delete(0, "end")
     input_field.insert(0, directory)
 
 def open_file_path(input_field: Entry):
+    "Creates a file open dialog and inserts chosen file path into entry box"
+
     directory = filedialog.askopenfilename(filetypes=[("PNG files", "*.png")])
     input_field.delete(0, "end")
     input_field.insert(0, directory)
 
 def import_text(textbox: Text):
+    "Creates a file open dialog for txt files and populates the text box with the content"
+
     text_file_path = filedialog.askopenfilename(filetypes=[("Text files", "*.txt")])
     with open(text_file_path, 'r', encoding='utf-8') as f:
         message = f.readlines()
@@ -23,45 +29,57 @@ def import_text(textbox: Text):
             textbox.insert(END, line)
 
 def decode_img(img: PIL.Image, delimiter='`') -> str:
+    "Analyzes the LSB of each pixel in an image to decode a message"
+
     width,height = img.size
     data = numpy.array(img)
     raw_bits = ""
 
+    # Grab each pixel, convert the RGB values to binary, and append
+    # the LSB of each to raw_bits
     for i in range(height):
         for j in range(width):
             r,g,b,*_ = map(lambda x: format(x, "08b"), data[i][j])
             raw_bits += r[-1] + g[-1] + b[-1]
     
+    # group the bits into bytes
     raw_bytes = [raw_bits[i:i+8] for i in range(0, len(raw_bits), 8)]
     message = ""
 
+    # convert each byte into a character, stopping at the delimiter
     for byte in raw_bytes:
         next_char = chr(int(byte, 2))
-        message += next_char
         if next_char == delimiter:
             break
-
-    return message[:-1]
+        message += next_char
+        
+    return message
 
 
 def encode_bytes(message: str, img: PIL.Image, delimiter='`') -> PIL.Image :
+    "encodes a string into an image using LSB steganography. Returns the encoded image"
+
     width,height = img.size
     data = numpy.array(img)
 
+    # remove any delimiters from the message
     message = message.replace(delimiter, "")
     message += delimiter
+
+    # convert every character to its binary representation
     message_bytes = [format(ord(x), "08b") for x in message]
     curr_bit = 0
     curr_byte = 0
 
     for i in range(height):
         for j in range(width):
+            # grabs only the RGB components of each pixel and converts them to binary
             pixel = data[i][j]
             r,g,b,*_ = map(lambda x: format(x, "08b"), pixel)
 
-            # LSB
             # red pixel
             if curr_byte < len(message_bytes):
+                # replace the least significant bit with the bit from the message
                 pixel[0] = int(r[:-1] + message_bytes[curr_byte][curr_bit], 2)
                 if curr_bit >= 7:
                     curr_bit = 0
@@ -90,22 +108,30 @@ def encode_bytes(message: str, img: PIL.Image, delimiter='`') -> PIL.Image :
 
     return PIL.Image.fromarray(data)
 
-def write_to_file(input_field: Entry, output_field: Entry, text: Listbox):
-        message = text.get(1.0, END)
-        print(message)
-        img = PIL.Image.open(input_field.get())
-        img2 = encode_bytes(message, img)
-        img2.save(output_field.get())
+def write_to_file(input_field: Entry, output_field: Entry, text: Text):
+    """ Encodes the message in the text box into the file specified in the input field.
+    Writes a new image file to the file path in the output field """
+
+    message = text.get(1.0, END)
+    print(message)
+    img = PIL.Image.open(input_field.get())
+    img2 = encode_bytes(message, img)
+    img2.save(output_field.get())
 
 def decode_file(input_field: Entry, display: Text):
+    """Decodes a message from the image in the input field.
+    Populates the display with the decoded message"""
+
     img = PIL.Image.open(input_field.get())
     display.delete(1.0, END)
     message = decode_img(img)
     display.insert(END, message)
 
+# initialize Tkinter
 root = Tk()
 root.title("StegoPy")
 
+# create the encode and decode tabs
 tab_control = ttk.Notebook(root)
 decode_tab = ttk.Frame(tab_control)
 encode_tab = ttk.Frame(tab_control)
