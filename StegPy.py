@@ -119,8 +119,8 @@ def write_to_file(input_field: Entry, output_field: Entry, text: Text):
     img2.save(output_field.get())
 
 def decode_file(input_field: Entry, display: Text):
-    """Decodes a message from the image in the input field.
-    Populates the display with the decoded message"""
+    """ Decodes a message from the image in the input field.
+    Populates the display with the decoded message """
 
     img = PIL.Image.open(input_field.get())
     display.delete(1.0, END)
