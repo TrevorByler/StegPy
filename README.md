@@ -8,7 +8,7 @@ Created by Trevor Byler
 - [x] Basic LSB encoding
 - [x] Command-line text interface
 - [x] GUI
-- [ ] High-capacity LSB encoding
+- [ ] Variable-capacity LSB encoding
 - [ ] Alpha-channel support
 - [ ] Warning and success message pop-ups
 - [ ] More image formats
