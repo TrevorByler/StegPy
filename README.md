@@ -6,6 +6,7 @@ Created by Trevor Byler
 ## Features
 
 - [x] Basic LSB encoding
+- [x] Command-line text interface
 - [x] GUI
 - [ ] High-capacity LSB encoding
 - [ ] Alpha-channel support
@@ -15,6 +16,8 @@ Created by Trevor Byler
 - [ ] Whatever I think of next
 
 ## Directions for Use
+
+These are directions for the GUI version. A text-based version is available in ImageProcess.py
 
 ### Encoding Data
 
