@@ -40,5 +40,5 @@ These are directions for the GUI version. A text-based version is available in I
 - This version of LSB encoding uses 3 bits per RGB pixel
 - Therefore, it takes 8 pixels to store 3 characters worth of data
 - If there are not enough pixels in the cover image to store the message, the message will be truncated
-- The program adds a delimiter to the message to mark the end of the message. The default delimeter is a double backtick ( `` )
-- If the message contains the delimiter, the entire message will be encoded, but decoding will stop at the first occurrence of the delimiter.
+- The program adds a delimiter to the message to mark the end of the message. The default delimeter is a backtick ( ` )
+- If the original message contains the delimiter, it will be removed.

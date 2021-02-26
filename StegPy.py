@@ -22,7 +22,7 @@ def import_text(textbox: Text):
         for line in message:
             textbox.insert(END, line)
 
-def decode_img(img: PIL.Image, delimiter='``') -> str:
+def decode_img(img: PIL.Image, delimiter='`') -> str:
     width,height = img.size
     data = numpy.array(img)
     raw_bits = ""
@@ -44,7 +44,7 @@ def decode_img(img: PIL.Image, delimiter='``') -> str:
     return message[:-1]
 
 
-def encode_bytes(message: str, img: PIL.Image, delimiter='``') -> PIL.Image :
+def encode_bytes(message: str, img: PIL.Image, delimiter='`') -> PIL.Image :
     width,height = img.size
     data = numpy.array(img)
 
@@ -91,7 +91,7 @@ def encode_bytes(message: str, img: PIL.Image, delimiter='``') -> PIL.Image :
     return PIL.Image.fromarray(data)
 
 def write_to_file(input_field: Entry, output_field: Entry, text: Listbox):
-        message = "".join(text.get(0, last=END))
+        message = text.get(1.0, END)
         print(message)
         img = PIL.Image.open(input_field.get())
         img2 = encode_bytes(message, img)
