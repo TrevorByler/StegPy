@@ -1,6 +1,6 @@
 ﻿# StegPy v0.1
 
-Hide your own data in PNG files with LSB stegonography. Uses Python's Pillow image processing library and numpy to encode and decode stego-images. Tkinter provides the GUI framework.
+Hide your own data in PNG files with LSB steganography. Uses Python's Pillow image processing library and numpy to encode and decode stego-images. Tkinter provides the GUI framework.
 Created by Trevor Byler
 
 ## Features
